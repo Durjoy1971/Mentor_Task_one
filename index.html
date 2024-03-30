@@ -1,36 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToDo List</title>
-    <link rel="stylesheet" href="main.css">
+    <link href="./output.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <title>To DO</title>
 </head>
 
-<body>
-    <main class="app">
-        <section class="greeting">
-            <h2 class="title">
-                Hi, <input type="text" id="name" placeholder="Enter Your Name">
+<body class="bg-[#fffbf5]">
+    <main class="app font-display flex flex-col gap-5 items-center mt-28 ">
+        <section>
+            <h2 class="text-lg text-black font-bold">
+                Hi, <input class="w-[250px] px-3 bg-[#fffbf5] text-slate-500 placeholder-teal-400 font-bold border-none"
+                    type="text" id="name" placeholder="Enter Your Name">
             </h2>
         </section>
-        <section class="create-todo">
-            <h3>To DO List</h3>
+        <section class="create-todo bg-red-400">
             <form id="new-todo-form">
-                <h4>Add A Task</h4>
-                <input type="text" name="content" id="content" placeholder="Example. make a cake">
-                <input type="submit" value="Add Task">
+                <input class="p-5 text-slate-500 w-[350px]" type="text" name="content" id="content"
+                    placeholder="Example. make a cake">
+                <input class="cursor-pointer p-2 font-bold" type="submit" value="Add Task">
             </form>
         </section>
 
-        <section class="todo-list">
-            <h3>TODO List</h3>
-            <div class="list" id="todo-list">
+        <section class="todo-list mt-10">
+            <div id="todo-list">
                 <div class="todo-item">
                     <label>
                         <input type="checkbox">
-                        <span class="bubble"></span>
                     </label>
                     <div class="todo-content">
                         <input type="text" value="Make a cake" readonly>

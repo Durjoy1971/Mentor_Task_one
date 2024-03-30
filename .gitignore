@@ -1,0 +1,5 @@
+# Tailwind CSS
+node_modules/
+public/
+.parcel-cache/
+dist/
