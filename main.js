@@ -1,40 +1,57 @@
 "use strict";
 
-let todos = []; // Array of Todos Object
+let todos = [];
 
-window.addEventListener("load", () => {
-  todos = JSON.parse(localStorage.getItem("todos")) || [];
-  //console.log("Loading ", todos);
-
+const editUserName = () => {
   const nameInput = document.querySelector("#name");
+  nameInput.value = localStorage.getItem("username") || "";
+  nameInput.addEventListener("change", handleUserName);
+};
+
+const handleUserName = (e) => {
+  saveUserName(e.target.value);
+};
+
+const saveUserName = (name) => {
+  localStorage.setItem("username", name);
+};
+
+const addNewTodoForm = () => {
   const newTodoForm = document.querySelector("#new-todo-form");
-  const userName = localStorage.getItem("username") || "";
-
-  nameInput.value = userName;
-
-  nameInput.addEventListener("change", (e) => {
-    //console.log(e);
-    localStorage.setItem("username", e.target.value);
-  });
-
   newTodoForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const todo = {
-      content: e.target.content.value,
-      done: false,
-      status: "To-Do",
-      createdAt: new Date().getTime(),
-    };
-
-    todos.push(todo);
-    localStorage.setItem("todos", JSON.stringify(todos));
-
-    e.target.reset();
-
-    DisplayTodos();
+    const content = e.target.content.value;
+    if (content.trim() !== "") {
+      todos = addTodo(content);
+      saveTodos(todos);
+      e.target.reset();
+      DisplayTodos();
+    }
   });
+};
 
+const addTodo = (content) => {
+  const todo = {
+    content,
+    done: false,
+    status: "To-Do",
+    createdAt: new Date().getTime(),
+  };
+  return [...todos, todo];
+};
+
+const saveTodos = (todos) =>
+  localStorage.setItem("todos", JSON.stringify(todos));
+
+const fetchingToDo = () => {
+  todos = JSON.parse(localStorage.getItem("todos")) || [];
+};
+
+window.addEventListener("load", () => {
+  editUserName();
+  addNewTodoForm();
+  fetchingToDo();
   DisplayTodos();
 });
 
@@ -43,7 +60,7 @@ function DisplayTodos() {
 
   todoList.innerHTML = ""; // Delete Previous All Things
 
-  todos.forEach((todo) => {
+  todos.forEach((todo, index) => {
     const todoItem = document.createElement("div");
     todoItem.classList.add(
       "flex",
