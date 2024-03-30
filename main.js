@@ -43,7 +43,7 @@ function DisplayTodos() {
 
   todoList.innerHTML = ""; // Delete Previous All Things
 
-  todos.forEach((todo) => {
+  todos.forEach((todo, index) => {
     const todoItem = document.createElement("div");
     todoItem.classList.add(
       "flex",
@@ -110,7 +110,7 @@ function DisplayTodos() {
       DisplayTodos();
     });
 
-    edit.addEventListener("click", (e) => {
+    edit.addEventListener("click", () => {
       const input = content.querySelector("input");
       input.removeAttribute("readonly");
       input.focus();
@@ -122,8 +122,14 @@ function DisplayTodos() {
       });
     });
 
-    deleteButton.addEventListener("click", (e) => {
-      todos = todos.filter((t) => t != todo);
+    deleteButton.addEventListener("click", () => {
+      const temp = [];
+      todos.forEach((t) => {
+        if (t != todo) {
+          temp.push(t);
+        }
+      });
+      todos = temp;
       localStorage.setItem("todos", JSON.stringify(todos));
       DisplayTodos();
     });
