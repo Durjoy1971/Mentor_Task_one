@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo List</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <main class="app">
+        <section class="greeting">
+            <h2 class="title">
+                Hi, <input type="text" id="name" placeholder="Enter Your Name">
+            </h2>
+        </section>
+        <section class="create-todo">
+            <h3>To DO List</h3>
+            <form id="new-todo-form">
+                <h4>Add A Task</h4>
+                <input type="text" name="content" id="content" placeholder="Example. make a cake">
+                <input type="submit" value="Add Task">
+            </form>
+        </section>
+
+        <section class="todo-list">
+            <h3>TODO List</h3>
+            <div class="list" id="todo-list">
+                <div class="todo-item">
+                    <label>
+                        <input type="checkbox">
+                        <span class="bubble"></span>
+                    </label>
+                    <div class="todo-content">
+                        <input type="text" value="Make a cake" readonly>
+                    </div>
+                    <div class="actions">
+                        <button class="status">To-Do</button>
+                        <button class="edit">Edit</button>
+                        <button class="delete">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+    <script src="main.js"></script>
+</body>
+
+</html>
