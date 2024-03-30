@@ -43,7 +43,7 @@ function DisplayTodos() {
 
   todoList.innerHTML = ""; // Delete Previous All Things
 
-  todos.forEach((todo, index) => {
+  todos.forEach((todo) => {
     const todoItem = document.createElement("div");
     todoItem.classList.add(
       "flex",
