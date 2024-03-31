@@ -22,7 +22,6 @@ window.addEventListener("load", () => {
 
     const todo = {
       content: e.target.content.value,
-      done: false,
       status: "To-Do",
       createdAt: new Date().getTime(),
     };
@@ -59,56 +58,36 @@ function DisplayTodos() {
       "w-[450px]"
     );
 
-    const input = document.createElement("input");
     const content = document.createElement("div");
-    const actions = document.createElement("div");
-    const edit = document.createElement("button");
-    const deleteButton = document.createElement("button");
-    const statusBtn = document.createElement("button");
-
-    input.type = "checkbox";
-    input.checked = todo.done;
-
-    content.appendChild(input);
-    actions.classList.add("flex", "gap-2", "text-sm", "font-light");
-    edit.classList.add("bg-pink-500", "text-white", "p-1", "rounded");
-    deleteButton.classList.add("bg-red-500", "text-white", "p-1", "rounded");
-    statusBtn.classList.add("bg-green-400", "text-white", "p-1", "rounded");
-
     content.innerHTML = `<input class="bg-[#fffbf5] p-1" type="text" value="${todo.content}" readonly>`;
 
+    const edit = document.createElement("button");
+    edit.classList.add("bg-pink-500", "text-white", "p-1", "rounded");
     edit.innerHTML = "Edit";
+
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("bg-red-500", "text-white", "p-1", "rounded");
     deleteButton.innerHTML = "Delete";
+
+    const statusBtn = document.createElement("button");
+    statusBtn.classList.add("bg-green-500", "text-white", "p-1", "rounded");
     statusBtn.innerHTML = `${todo.status}`;
 
+    const actions = document.createElement("div");
+    actions.classList.add("flex", "gap-2", "text-sm", "font-light");
     actions.appendChild(statusBtn);
     actions.appendChild(edit);
     actions.appendChild(deleteButton);
 
     todoItem.appendChild(content);
     todoItem.appendChild(actions);
-
     todoList.appendChild(todoItem);
 
-    if (todo.done) {
+    if (todo.status === "Done") {
       todoItem.classList.add("text-gray-300");
+    } else if (todo.status === "Doing") {
+      todoItem.classList.add("text-blue-600", "font-semibold");
     }
-
-    input.addEventListener("click", (e) => {
-      todo.done = e.target.checked;
-
-      if (todo.done) {
-        todo.status = "Done";
-        todoItem.classList.add("text-gray-300");
-      } else {
-        todoItem.classList.add("text-gray-300");
-        todo.status = "To-Do";
-      }
-
-      localStorage.setItem("todos", JSON.stringify(todos));
-
-      DisplayTodos();
-    });
 
     edit.addEventListener("click", () => {
       const input = content.querySelector("input");
@@ -134,17 +113,14 @@ function DisplayTodos() {
       DisplayTodos();
     });
 
-    statusBtn.addEventListener("click", (e) => {
+    statusBtn.addEventListener("click", () => {
       let temp_status = todo.status;
       if (temp_status === "To-Do") {
         todo.status = "Doing";
-        todo.done = false;
       } else if (temp_status === "Doing") {
         todo.status = "Done";
-        todo.done = true;
       } else {
         todo.status = "To-Do";
-        todo.done = false;
       }
       localStorage.setItem("todos", JSON.stringify(todos));
       DisplayTodos();
