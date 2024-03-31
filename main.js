@@ -16,6 +16,16 @@ const saveUserName = (name) => {
   localStorage.setItem("username", name);
 };
 
+const toogleStatus = (status) => {
+  if (status === "To-Do") {
+    return "Doing";
+  } else if (status === "Doing") {
+    return "Done";
+  } else {
+    return "To-Do";
+  }
+};
+
 const addNewTodoForm = () => {
   const newTodoForm = document.querySelector("#new-todo-form");
   newTodoForm.addEventListener("submit", (e) => {
@@ -34,7 +44,6 @@ const addNewTodoForm = () => {
 const addTodo = (content) => {
   const todo = {
     content,
-    done: false,
     status: "To-Do",
     createdAt: new Date().getTime(),
   };
@@ -43,6 +52,10 @@ const addTodo = (content) => {
 
 const saveTodos = (todos) =>
   localStorage.setItem("todos", JSON.stringify(todos));
+
+const deleteTodo = (todo) => {
+  return todos.filter((cur_todo) => cur_todo !== todo);
+};
 
 const fetchingToDo = () => {
   todos = JSON.parse(localStorage.getItem("todos")) || [];
@@ -60,7 +73,7 @@ function DisplayTodos() {
 
   todoList.innerHTML = ""; // Delete Previous All Things
 
-  todos.forEach((todo, index) => {
+  todos.forEach((todo) => {
     const todoItem = document.createElement("div");
     todoItem.classList.add(
       "flex",
@@ -76,58 +89,38 @@ function DisplayTodos() {
       "w-[450px]"
     );
 
-    const input = document.createElement("input");
     const content = document.createElement("div");
-    const actions = document.createElement("div");
-    const edit = document.createElement("button");
-    const deleteButton = document.createElement("button");
-    const statusBtn = document.createElement("button");
-
-    input.type = "checkbox";
-    input.checked = todo.done;
-
-    content.appendChild(input);
-    actions.classList.add("flex", "gap-2", "text-sm", "font-light");
-    edit.classList.add("bg-pink-500", "text-white", "p-1", "rounded");
-    deleteButton.classList.add("bg-red-500", "text-white", "p-1", "rounded");
-    statusBtn.classList.add("bg-green-400", "text-white", "p-1", "rounded");
-
     content.innerHTML = `<input class="bg-[#fffbf5] p-1" type="text" value="${todo.content}" readonly>`;
 
+    const edit = document.createElement("button");
+    edit.classList.add("bg-pink-500", "text-white", "p-1", "rounded");
     edit.innerHTML = "Edit";
+
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("bg-red-500", "text-white", "p-1", "rounded");
     deleteButton.innerHTML = "Delete";
+
+    const statusBtn = document.createElement("button");
+    statusBtn.classList.add("bg-green-500", "text-white", "p-1", "rounded");
     statusBtn.innerHTML = `${todo.status}`;
 
+    const actions = document.createElement("div");
+    actions.classList.add("flex", "gap-2", "text-sm", "font-light");
     actions.appendChild(statusBtn);
     actions.appendChild(edit);
     actions.appendChild(deleteButton);
 
     todoItem.appendChild(content);
     todoItem.appendChild(actions);
-
     todoList.appendChild(todoItem);
 
-    if (todo.done) {
+    if (todo.status === "Done") {
       todoItem.classList.add("text-gray-300");
+    } else if (todo.status === "Doing") {
+      todoItem.classList.add("text-blue-600", "font-semibold");
     }
 
-    input.addEventListener("click", (e) => {
-      todo.done = e.target.checked;
-
-      if (todo.done) {
-        todo.status = "Done";
-        todoItem.classList.add("text-gray-300");
-      } else {
-        todoItem.classList.add("text-gray-300");
-        todo.status = "To-Do";
-      }
-
-      localStorage.setItem("todos", JSON.stringify(todos));
-
-      DisplayTodos();
-    });
-
-    edit.addEventListener("click", (e) => {
+    edit.addEventListener("click", () => {
       const input = content.querySelector("input");
       input.removeAttribute("readonly");
       input.focus();
@@ -139,25 +132,15 @@ function DisplayTodos() {
       });
     });
 
-    deleteButton.addEventListener("click", (e) => {
-      todos = todos.filter((t) => t != todo);
-      localStorage.setItem("todos", JSON.stringify(todos));
+    deleteButton.addEventListener("click", () => {
+      todos = deleteTodo(todo);
+      saveTodos(todos);
       DisplayTodos();
     });
 
-    statusBtn.addEventListener("click", (e) => {
-      let temp_status = todo.status;
-      if (temp_status === "To-Do") {
-        todo.status = "Doing";
-        todo.done = false;
-      } else if (temp_status === "Doing") {
-        todo.status = "Done";
-        todo.done = true;
-      } else {
-        todo.status = "To-Do";
-        todo.done = false;
-      }
-      localStorage.setItem("todos", JSON.stringify(todos));
+    statusBtn.addEventListener("click", () => {
+      todo.status = toogleStatus(todo.status);
+      saveTodos(todos);
       DisplayTodos();
     });
   });
